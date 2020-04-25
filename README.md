@@ -1,3 +1,2 @@
 # SSMI Python
-The Python end of my SteelSeries Media Integration project. This repository contains all of the POST code required to
-communicate with SteelSeries Engine. This repository also contains a driver file for testing the POST code.
+This code reads from (currently) Spotify to get the current song information to then be used to update a SteelSeries keyboard's OLED display.
