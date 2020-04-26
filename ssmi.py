@@ -48,6 +48,11 @@ def update_event(url, game, event, line_one, line_two, progress_percent):
     return requests.post(url + "game_event", json=json_dict)
 
 
+def remove_event(url, game, event):
+    json_dict = {"game": game, "event": event}
+    return requests.post(url + "remove_game_event", json=json_dict)
+
+
 def remove_game(url, game):
     json_dict = {"game": game}
     return requests.post(url + "remove_game", json=json_dict)

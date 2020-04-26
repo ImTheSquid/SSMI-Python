@@ -11,7 +11,7 @@ def print_stat(r):
 
 
 # Subject to change, should be updated every time computer restarts
-target = "http://127.0.0.1:49391/"
+target = "http://127.0.0.1:53309/"
 print(print_stat(ssmi.game_metadata(target, "SSMI", "SteelSeries Media Integration", "Jack Hogan")))
 print(print_stat(ssmi.bind_event(target, "SSMI", "UPDATE", 0, 100, 23)))
 
