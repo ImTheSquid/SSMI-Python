@@ -56,3 +56,8 @@ def remove_event(url, game, event):
 def remove_game(url, game):
     json_dict = {"game": game}
     return requests.post(url + "remove_game", json=json_dict)
+
+
+def heartbeat(url, game):
+    json_dct = {"game": game}
+    return requests.post(url + "heartbeat", json=json_dct)

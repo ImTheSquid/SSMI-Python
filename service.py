@@ -143,6 +143,9 @@ class SSMIService(win32serviceutil.ServiceFramework):
                     artist = artist[:11] + '...'
                 progress = int(current['progress_ms'] / current['item']['duration_ms'] * 100)
                 ssmi.update_event(self.target, 'SSMI', 'UPDATE', title, artist, progress)
+            else:
+                # Keep alive if can't update
+                ssmi.heartbeat(self.target, "SSMI")
             sleep(0.5)
 
 
