@@ -4,6 +4,7 @@ from datetime import date, datetime
 from pathlib import Path
 from time import sleep
 
+import requests
 import servicemanager
 import spotipy
 import spotipy.util as util
@@ -89,7 +90,14 @@ class SSMIService(win32serviceutil.ServiceFramework):
             writeLog('Error: Couldn\'t load coreProps.json')
             return
         self.target = 'http://' + ss_data['address'] + '/'
-        ssmi.game_metadata(self.target, 'SSMI', 'SteelSeries Media Integration', 'Jack Hogan')
+        try:
+            ssmi.game_metadata(self.target, 'SSMI', 'SteelSeries Media Integration', 'Jack Hogan')
+        except requests.exceptions.ConnectionError:
+            sleep(60)
+            try:
+                ssmi.game_metadata(self.target, 'SSMI', 'SteelSeries Media Integration', 'Jack Hogan')
+            except requests.exceptions.ConnectionError:
+                return
         ssmi.bind_event(self.target, 'SSMI', 'UPDATE', 0, 100, 23)
         self.ss_login_status = True
 
@@ -115,7 +123,12 @@ class SSMIService(win32serviceutil.ServiceFramework):
 
     def loop(self):
         while self.running:
-            current = self.sp.current_playback()
+            try:
+                current = self.sp.current_playback()
+            except spotipy.exceptions.SpotifyException:
+                writeLog("Error: Couldn't refresh access token")
+                self.SvcStop()
+                return
             if self.invalid_count < 5 and \
                     (current is None or (current is not None and current['device']['type'] != 'Computer')):
                 self.invalid_count += 1
