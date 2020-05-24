@@ -3,12 +3,12 @@ This code reads from (currently) Spotify to get the current song information to 
 keyboard's OLED display.
 
 # MacOS
-Code is in, tutorial will be put in later. To launch as daemon, just use `sudo python3 unix.py`.
+Code is in, tutorial will be put in later. Make sure you have `python-daemon`, `requests`, and `spotipy` installed as root. To launch as daemon, just use `sudo python3 unix.py`.
 
 # Windows
 This is not for the lighthearted.
 
-First, you will need Python 3.8 installed with `pywin32`, `requests`, and `spotipy` installed. You then need to set
+First, you will need Python 3.8 installed with `pywin32`, `requests`, and `spotipy` installed as root. You then need to set
 some **system** `PATH` variables:
 - `[PythonPath]\Python38-32\Scripts\`
 - `[PythonPath]\Python38-32\`
