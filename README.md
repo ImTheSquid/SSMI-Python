@@ -2,7 +2,10 @@
 This code reads from (currently) Spotify to get the current song information to then be used to update a SteelSeries 
 keyboard's OLED display.
 
-## How do I set it up?
+# MacOS
+Code is in, tutorial will be put in later. To launch as daemon, just use `sudo python3 unix.py`.
+
+# Windows
 This is not for the lighthearted.
 
 First, you will need Python 3.8 installed with `pywin32`, `requests`, and `spotipy` installed. You then need to set
