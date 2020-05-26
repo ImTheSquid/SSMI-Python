@@ -103,6 +103,7 @@ class SSMIService(win32serviceutil.ServiceFramework):
 
         # Spotify init
         creds = load_creds()
+        self.creds = creds
         if creds is None:
             writeLog('Error: Couldn\'t load creds.json')
             return
@@ -125,10 +126,32 @@ class SSMIService(win32serviceutil.ServiceFramework):
         while self.running:
             try:
                 current = self.sp.current_playback()
-            except spotipy.exceptions.SpotifyException:
-                writeLog("Error: Couldn't refresh access token")
-                self.SvcStop()
-                return
+            except spotipy.SpotifyException:
+                try:
+                    self.sp = spotipy.Spotify(client_credentials_manager=spotipy.SpotifyClientCredentials(client_id=
+                                                                                                          self.creds[
+                                                                                                              'client_'
+                                                                                                              'id'],
+                                                                                                          client_secret=
+                                                                                                          self.creds[
+                                                                                                              'client'
+                                                                                                              '_secret']
+                                                                                                          ),
+                                              auth=util.prompt_for_user_token(self.creds['username'],
+                                                                              scope='user-read-currently'
+                                                                                    '-playing, '
+                                                                                    'user-read-playback-state',
+                                                                              client_id=self.creds['client_id'],
+                                                                              client_secret=self.creds['client_secret'],
+                                                                              redirect_uri='http://localhost:8888'
+                                                                                           '/callback'))
+                except spotipy.SpotifyException:
+                    writeLog("Error: Couldn't refresh access token")
+                    self.SvcStop()
+                    return
+                else:
+                    current = self.sp.current_playback()
+
             if self.invalid_count < 5 and \
                     (current is None or (current is not None and current['device']['type'] != 'Computer')):
                 self.invalid_count += 1
