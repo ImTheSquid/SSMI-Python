@@ -1,17 +1,16 @@
-from datetime import date, datetime
 import json
 import os
+import signal
+from datetime import date, datetime
 from pathlib import Path
 from time import sleep
 
+import daemon
+import lockfile
 import requests
 import spotipy
 
 import ssmi
-
-import daemon
-import signal
-import lockfile
 
 config_dir = str(Path.home()) + '/SSMI'
 daemon_obj = None
@@ -116,8 +115,36 @@ class SSMIUnix:
             try:
                 current = self.sp.current_playback()
             except spotipy.exceptions.SpotifyException:
-                write_log('Error: Failed to refresh access token')
-                return
+                try:
+                    self.sp = spotipy.Spotify(client_credentials_manager=spotipy.SpotifyClientCredentials(client_id=
+                                                                                                          self.dict_data
+                                                                                                          [
+                                                                                                              'client_'
+                                                                                                              'id'],
+                                                                                                          client_secret=
+                                                                                                          self.dict_data
+                                                                                                          [
+                                                                                                              'client'
+                                                                                                              '_secret'
+                                                                                                              '']),
+                                              auth=spotipy.util.prompt_for_user_token(self.dict_data['username'],
+                                                                                      scope='user-read'
+                                                                                            '-currently'
+                                                                                            '-playing, '
+                                                                                            'user-read'
+                                                                                            '-playback-'
+                                                                                            'state',
+                                                                                      client_id=self.dict_data['client'
+                                                                                                               '_id'],
+                                                                                      client_secret=self.dict_data[
+                                                                                          'client_secret'],
+                                                                                      redirect_uri='http://localhost'
+                                                                                                   ':8888/callback'))
+                except spotipy.SpotifyException:
+                    write_log('Error: Failed to refresh access token')
+                    return
+                else:
+                    current = self.sp.current_playback()
             if self.invalid_count < 5 and \
                     (current is None or (current is not None and current['device']['type'] != 'Computer')):
                 self.invalid_count += 1
