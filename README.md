@@ -28,7 +28,7 @@ Next, you need to copy `[PythonPath]\Python38-32\Lib\site-packages\pywin32_syste
 
 Next, you need to install the service. To do this, navigate to `service.py` in the Command Prompt 
 and run `python service.py install`. **I have not tested what happens if the file is moved after installation, 
-so undefined behavior may occur.** If you want to move the file after installation, run `pythin service.py remove`,
+so undefined behavior may occur.** If you want to move the file after installation, run `python service.py remove`,
 restart, move the file, then run the install command again and follow the directions from here.
 
 You're almost done! Run `services.msc`, then navigate to the `SteelSeries Media Integration Service`. Don't start it yet!
