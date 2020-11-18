@@ -8,6 +8,10 @@ keyboard's OLED display.
 Make sure you have `python-daemon`, `requests`, and `spotipy` installed as root. To launch as daemon, just use `sudo python3 unix.py`. You can make a startup file if you want, but implementations are platform-dependent.
 
 # Windows
+**Look at my [new repository](https://github.com/ImTheSquid/SSMI-CS) that has a native implementation of this repo.**
+
+**Below are the old instructions.**
+
 This is not for the lighthearted.
 
 First, you will need Python 3.8 installed with `pywin32`, `requests`, and `spotipy` installed as root. You then need to set
